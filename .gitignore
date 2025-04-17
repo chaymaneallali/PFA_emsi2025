@@ -1,0 +1,30 @@
+# Ignore IDE files
+.idea/
+.vscode/
+
+# Ignore build output directories
+/target/
+/node_modules/
+/dist/
+
+# Ignore environment files
+.env
+
+# Ignore log files
+*.log
+
+# Ignore compiled Java files
+*.class
+
+# Ignore Python bytecode
+*.pyc
+*.pyo
+
+# Ignore virtual environments for Python
+venv/
+env/
+
+# Ignore MySQL database files
+*.db
+
+
