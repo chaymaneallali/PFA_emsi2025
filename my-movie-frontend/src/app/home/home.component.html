@@ -1,0 +1,129 @@
+<!-- src/app/home/home.component.html -->
+<div class="container mt-4">
+  <h2>Welcome to MyMovie!</h2>
+  
+  <!-- Search Bar -->
+  <div class="mb-4">
+    <div class="input-group">
+      <input 
+        type="text" 
+        class="form-control" 
+        placeholder="Search movies..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="searchMovies()"
+      >
+      <button class="btn btn-primary" type="button" (click)="searchMovies()">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Rated Movies (Horizontal Scroll) -->
+  <div class="mb-5">
+    <h4>Top Rated Movies</h4>
+    <div *ngIf="loading.topRated" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="errors.topRated" class="alert alert-danger">
+      {{ errors.topRated }}
+    </div>
+    <div class="scrolling-wrapper" *ngIf="!loading.topRated && topRatedMovies.length">
+      <div *ngFor="let movie of topRatedMovies" class="movie-card" (click)="viewMovieDetails(movie.movieId)">
+        <img [src]="movie.poster_path" alt="{{ movie.title }} poster" class="movie-poster">
+        <div class="card-body">
+          <h5 class="movie-title">{{ movie.title }}</h5>
+          <div class="movie-info">
+            <span class="rating-badge">★ {{ movie.avg_rating | number:'1.1-1' }}</span>
+            <span class="votes">({{ movie.num_ratings }} votes)</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-link see-all" (click)="viewMovieDetails(-1)">See All Top Rated</button>
+    </div>
+  </div>
+
+  <!-- Hybrid Recommendations (Horizontal Scroll) -->
+  <!-- <div class="mb-5">
+    <h4>Recommended For You</h4>
+    <div *ngIf="loading.hybrid" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="errors.hybrid" class="alert alert-danger">
+      {{ errors.hybrid }}
+    </div>
+    <div class="scrolling-wrapper" *ngIf="!loading.hybrid && hybridRecommendations.length">
+      <div *ngFor="let movie of hybridRecommendations" class="movie-card" (click)="viewMovieDetails(movie.movieId)">
+        <img [src]="movie.poster_path" alt="{{ movie.title }} poster" class="movie-poster">
+        <div class="card-body">
+          <h5 class="movie-title">{{ movie.title }}</h5>
+          <div class="movie-info">
+            <span class="rating-badge">★ {{ movie.avg_rating | number:'1.1-1' }}</span>
+            <span class="votes">({{ movie.num_ratings }} votes)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <!-- Collaborative Recommendations Section -->
+<div class="mb-5">
+  <h4>Recommended For You</h4>
+  <div *ngIf="loading.collaborative" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <div *ngIf="errors.collaborative" class="alert alert-danger">
+    {{ errors.collaborative }}
+  </div>
+  <div class="scrolling-wrapper" *ngIf="!loading.collaborative && collaborativeRecommendations.length">
+    <div *ngFor="let movie of collaborativeRecommendations" class="movie-card" (click)="viewMovieDetails(movie.movieId)">
+      <img [src]="movie.poster_path" alt="{{ movie.title }} poster" class="movie-poster">
+      <div class="card-body">
+        <h5 class="movie-title">{{ movie.title }}</h5>
+        <div class="movie-info">
+          <span class="rating-badge">★ {{ movie.avg_rating | number:'1.1-1' }}</span>
+          <span class="votes">({{ movie.num_ratings }} votes)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+  <!-- All Movies (Vertical Scroll) -->
+  <div class="mb-5">
+    <h4>All Movies</h4>
+    <div *ngIf="loading.allMovies" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div *ngIf="errors.allMovies" class="alert alert-danger">
+      {{ errors.allMovies }}
+    </div>
+    <div class="vertical-scroll" *ngIf="!loading.allMovies && allMovies.length">
+      <div class="row">
+        <div *ngFor="let movie of allMovies" class="col-md-3 mb-4">
+          <div class="movie-card" (click)="viewMovieDetails(movie.movieId)">
+            <img [src]="movie.poster_path" alt="{{ movie.title }} poster" class="movie-poster">
+            <div class="card-body">
+              <h5 class="movie-title">{{ movie.title }}</h5>
+              <div class="movie-info">
+                <span class="rating-badge">★ {{ movie.avg_rating | number:'1.1-1' }}</span>
+                <span class="votes">({{ movie.num_ratings }} votes)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

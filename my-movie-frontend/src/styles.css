@@ -1,0 +1,74 @@
+/* You can add global styles to this file, and also import other style files */
+/* Add this at the top */
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+/* Add these global styles */
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .scrolling-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 1rem 0;
+    -webkit-overflow-scrolling: touch;
+    
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+  }
+  
+  .movie-card {
+    flex: 0 0 auto;
+    width: 200px;
+    margin-right: 1rem;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+    
+    img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    
+    .card-body {
+      padding: 1rem;
+      
+      h5 {
+        font-size: 1rem;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .rating {
+        color: #f5c518;
+        font-weight: bold;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+  
+  .vertical-scroll {
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 1rem;
+  }

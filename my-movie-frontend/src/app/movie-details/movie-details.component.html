@@ -1,0 +1,186 @@
+<!-- src/app/movie-details/movie-details.component.html
+<div class="container mt-4">
+    <div *ngIf="loading" class="text-center my-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="movie && !loading">
+      <div class="row">
+        <div class="col-md-4">
+          <img [src]="movie.poster_path" alt="{{ movie.title }} poster" class="img-fluid rounded">
+        </div>
+        <div class="col-md-8">
+          <h1>{{ movie.title }}</h1>
+          <div class="badge bg-warning text-dark me-2">
+            ★ {{ movie.avg_rating | number:'1.1-1' }}
+          </div>
+          <span class="text-muted">{{ movie.num_ratings }} ratings</span>
+          <div class="mt-3">
+            <h4>Genres</h4>
+            <div class="d-flex flex-wrap gap-2">
+              <span *ngFor="let genre of movie.genres" class="badge bg-primary">
+                {{ genre }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="mt-5" *ngIf="recommendations.length">
+        <h3>Recommended Movies</h3>
+        <div class="scrolling-wrapper">
+          <div *ngFor="let rec of recommendations" class="movie-card">
+            <img [src]="rec.poster_path" alt="{{ rec.title }} poster" class="movie-poster">
+            <div class="card-body">
+              <h5 class="movie-title">{{ rec.title }}</h5>
+              <div class="movie-info">
+                <span class="rating-badge">★ {{ rec.avg_rating | number:'1.1-1' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   -->
+
+
+
+
+<!-- src/app/movie-details/movie-details.component.html -->
+<div class="container mt-4">
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="movie && !loading">
+    <div class="row">
+      <div class="col-md-4">
+        <img [src]="movie.poster_path" alt="{{ movie.title }} poster" class="img-fluid rounded">
+      </div>
+      <div class="col-md-8">
+        <h1>{{ movie.title }}</h1>
+        
+        <!-- Metadata Row -->
+        <div class="d-flex flex-wrap gap-3 mb-3">
+          <div class="badge bg-warning text-dark">
+            ★ {{ movie.avg_rating | number:'1.1-1' }} ({{ movie.num_ratings }} ratings)
+          </div>
+          <div class="badge bg-info">
+            {{ movie.release_year }}
+          </div>
+          <div class="badge bg-secondary">
+            {{ movie.language | uppercase }}
+          </div>
+          <div class="badge bg-success">
+            {{ movie.duration }} mins
+          </div>
+        
+        </div>
+
+        <!-- Overview -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="card-title">Overview</h5>
+            <p class="card-text">{{ movie.overview }}</p>
+          </div>
+        </div>
+
+
+        <!-- Rating Section -->
+<div class="mt-4" *ngIf="authService.isAuthenticated()">
+  <div *ngIf="userRating !== null && userRating !== undefined">
+    <p>Your Rating: {{ userRating }}</p>
+  </div>
+  <div *ngIf="userRating == null">
+    <p>Your h'avent rated this movie yet {{ userRating }}</p>
+  </div>
+  <div class="rating-container">
+    <div class="star-rating">
+      <span *ngFor="let star of [1,2,3,4,5]" 
+             (click)="newRating = star"
+             [class.filled]="star <= newRating"
+             [class.has-rating]="userRating !== null">
+        ★
+      </span>
+    </div>
+    <button class="btn btn-primary mt-2" 
+            (click)="rateMovie()"
+            [disabled]="newRating === 0">
+      {{ userRating ? 'Update Rating' : 'Submit Rating' }}
+    </button>
+  </div>
+
+  <div class="mt-3">
+    <button class="btn btn-success me-2" (click)="markAsWatched()">Watched</button>
+    <button class="btn btn-info" (click)="markAsToWatch()">To Watch</button>
+  </div>
+</div>
+</div>
+
+        <!-- End Rating Section -->
+
+      </div>
+    </div>
+
+    <div class="mt-5" *ngIf="recommendations.length">
+      <h3>Recommended Movies Based on Content </h3>
+      <div class="scrolling-wrapper">
+        <div *ngFor="let rec of recommendations" class="movie-card">
+          <img [src]="rec.poster_path" alt="{{ rec.title }} poster" class="movie-poster">
+          <div class="card-body">
+            <h5 class="movie-title">{{ rec.title }}</h5>
+            <div class="movie-info">
+              <span class="rating-badge">★ {{ rec.avg_rating | number:'1.1-1' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    
+    <div class="mb-5">
+      <h4>Hybrid Recommendations</h4>
+      <div *ngIf="loadingStates.hybrid" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="errors.hybrid" class="alert alert-danger">
+        {{ errors.hybrid }}
+      </div>
+      <div class="scrolling-wrapper" *ngIf="!loadingStates.hybrid && hybridRecommendations.length">
+        <div *ngFor="let movie of hybridRecommendations" class="movie-card" (click)="viewMovieDetails(movie.movieId)">
+          <img [src]="movie.poster_path" alt="{{ movie.title }} poster" class="movie-poster">
+          <div class="card-body">
+            <h5 class="movie-title">{{ movie.title }}</h5>
+            <div class="movie-info">
+              <span class="rating-badge">★ {{ movie.avg_rating | number:'1.1-1' }}</span>
+              <span class="votes">({{ movie.num_ratings }} votes)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
